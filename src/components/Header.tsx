@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Flag from 'react-world-flags';
+import HealthIndicator from './HealthIndicator';
 
 const Header: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -37,6 +38,7 @@ const Header: React.FC = () => {
           <button onClick={() => changeLanguage('pt')} className="flex items-center bg-gray-700 hover:bg-gray-600 text-white font-bold w-10 h-10 rounded-full">
             <Flag code="BR" className="w-8 h-8 rounded-full object-cover" />
           </button>
+          <HealthIndicator /> {/* Include the HealthIndicator component */}
         </div>
       </nav>
     </header>

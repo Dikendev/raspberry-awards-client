@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { createMovie, deleteMovie, fetchMovies, updateMovie } from '../services/apiService';
-import MovieModal from '../components/MovieModal';
+import { createMovie, deleteMovie, fetchMovies, updateMovie, uploadFile } from '../services/apiService';
+import MovieModal from '../components/modals/UpdateMovieModalForm';
 import Modal from 'react-modal';
-import AddMovieForm from '../components/AddComponentForm';
+import AddMovieForm from '../components/modals/CreateMovieModalForm';
 import Spinner from '../components/Spinner';
 import { useTranslation } from 'react-i18next';
 import { Movie } from '../interfaces/MovieInterface';
 import { CreateMovie } from '../interfaces/CreateMovieInterface';
+import PaginationControls from '../components/PaginationControl';
+import FileUploader from '../components/FileUploader';
+import SearchBar from '../components/searchBar/SearchBar';
 
 const RaspberryAwards: React.FC = () => {
   const { t } = useTranslation();
@@ -19,6 +22,12 @@ const RaspberryAwards: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [csvFileName, setCsvFileName] = useState<string | null>(null);
+  const [searchQueries, setSearchQueries] = useState({
+      title: '',
+      year: '',
+      producer: '',
+      studio: '',
+    });
 
   useEffect(() => {
     const loadMovies = async () => {
@@ -34,7 +43,7 @@ const RaspberryAwards: React.FC = () => {
 
   const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLimit(parseInt(e.target.value, 10));
-    setPage(1); // Reset page to 1 when limit changes
+    setPage(1);
   };
 
   const handleUpdate = async (movieId: string) => {
@@ -80,17 +89,42 @@ const RaspberryAwards: React.FC = () => {
     }
   };
 
-  const closeErrorModal = () => {
-    setError(null);
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file && file.type === 'text/csv') {
       setCsvFileName(file.name);
+
+      try {
+        await uploadFile(file, setLoading)
+      } catch (error) {
+        setError('Failed to upload CSV file')
+      }
+      
     } else {
       setError('Please upload a valid CSV file.');
     }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value } = e.target;
+    setSearchQueries(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+   const filteredMovies = movies.filter(movie => {
+    return (
+      movie.title.toLowerCase().includes(searchQueries.title.toLowerCase()) &&
+      movie.year.toString().includes(searchQueries.year) &&
+      movie.producer.some(p => p.name.toLowerCase().includes(searchQueries.producer.toLowerCase())) &&
+      movie.studio.some(s => s.name.toLowerCase().includes(searchQueries.studio.toLowerCase()))
+    );
+  });
+
+
+  const closeErrorModal = () => {
+    setError(null);
   };
 
   return (
@@ -102,24 +136,26 @@ const RaspberryAwards: React.FC = () => {
       >
         {t('addMovie')}
       </button>
-      <div className="mb-4 flex flex-row gap-5" >
-       <div>
-         <label className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer inline-block">
-          {t('uploadCSV')}
-          <input
-            type="file"
-            accept=".csv"
-            onChange={handleFileUpload}
-            className="hidden"
-          />
-        </label>
-        {csvFileName && <p className="mt-2 text-sm text-gray-600">{t('uploadedFile')}: {csvFileName}</p>}
-       </div>
-        <div className='self-center'>
-          <p className="text-sm text-gray-600">{t('You can also upload a CSV file with the correct format to save to the table')}</p>
-        </div>
-      </div>
+      <SearchBar
+      onSearchChange={handleSearchChange}
+      searchQueries={searchQueries}
+      t={t}
+      />
+    <div>
+      <FileUploader
+        handleFileUpload={handleFileUpload}
+        csvFileName={csvFileName}
+        t={t}
+      />
+    </div>
 
+      <PaginationControls
+        limit={limit}
+        handleLimitChange={handleLimitChange}
+        page={page}
+        setPage={setPage}
+        t={t}
+      />
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white">
           <thead>
@@ -133,7 +169,7 @@ const RaspberryAwards: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {movies.map((movie) => (
+            {filteredMovies.map((movie) => (
               <tr key={movie._id}>
                 <td className="border px-4 py-2">{movie.title}</td>
                 <td className="border px-4 py-2">{movie.year}</td>
@@ -166,35 +202,13 @@ const RaspberryAwards: React.FC = () => {
         </table>
       </div>
 
-      <div className="mt-4 flex flex-col sm:flex-row justify-between">
-        <div className="flex items-center mb-4 sm:mb-0">
-          <label htmlFor="limit" className="mr-2">{t('itemsPerPage')}:</label>
-          <select
-            id="limit"
-            className="bg-white border border-gray-300 px-4 py-2 rounded"
-            value={limit}
-            onChange={handleLimitChange}
-          >
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={30}>30</option>
-          </select>
-        </div>
-        <div className="flex justify-center sm:w-1/2 space-x-4">
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={() => setPage(page => Math.max(page - 1, 1))}
-          >
-            {t('previous')}
-          </button>
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={() => setPage(page => page + 1)}
-          >
-            {t('next')}
-          </button>
-        </div>
-      </div>
+      <PaginationControls
+        limit={limit}
+        handleLimitChange={handleLimitChange}
+        page={page}
+        setPage={setPage}
+        t={t}
+      />
 
       {selectedMovie && (
         <MovieModal

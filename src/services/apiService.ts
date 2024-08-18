@@ -107,9 +107,6 @@ export const fetchAnalyticsData = async (
 		const fastestUrl = `${BASE_URL}/analytics/fastest-wins`;
 		const largestGapUrl = `${BASE_URL}/analytics/largest-gap`;
 
-		console.log("largestGapUrl", largestGapUrl);
-		console.log("fastestUrl", fastestUrl);
-
 		const [largestGapResponse, fastestWinsResponse] = await Promise.all([
 			axios.get<AnalyticsResult>(largestGapUrl),
 			axios.get<FastestWinsResult>(fastestUrl),
@@ -133,11 +130,7 @@ export const fetchProducerMovieCounts = async (
 	setLoading(true);
 	try {
 		const movieCounts = `${BASE_URL}/analytics/movie-counts`;
-		console.log("movieCounts", movieCounts);
 		const response = await axios.get(movieCounts);
-
-		console.log("response", response);
-
 		return response.data;
 	} catch (error) {
 		console.error("Error fetching producer data:", error);

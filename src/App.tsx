@@ -16,7 +16,6 @@ const App: React.FC = () => {
         <Route path="/raspberry" element={<RaspberryAwards />} />
         <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="/about" element={<About />} />
-        {/* <Route path="/contact" element={<Contact />} /> */}
       </Routes>
     </Router>
   );

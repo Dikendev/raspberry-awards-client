@@ -4,6 +4,7 @@ import {
 	AnalyticsResult,
 	FastestWinsResult,
 } from "../interfaces/AnalyticsInterface";
+import { HealthApiInterface } from "../interfaces/health-api/HealthApiInterface";
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -46,6 +47,8 @@ export const updateMovie = async (
 	updateData: any,
 	setLoading: (loading: boolean) => void
 ) => {
+	console.log("updateData", updateData);
+
 	setLoading(true);
 	try {
 		const response = await axios.patch(
@@ -137,6 +140,40 @@ export const fetchProducerMovieCounts = async (
 		return response.data;
 	} catch (error) {
 		console.error("Error fetching producer data:", error);
+		throw error;
+	} finally {
+		setLoading(false);
+	}
+};
+
+export const checkHealthApi = async (): Promise<HealthApiInterface> => {
+	try {
+		const response = await axios.get<HealthApiInterface>(`${BASE_URL}/health`);
+		return response.data;
+	} catch (error) {
+		console.error("Error checking health:", error);
+		throw error;
+	}
+};
+
+export const uploadFile = async (
+	file: File,
+	setLoading: (loading: boolean) => void
+) => {
+	setLoading(true);
+	const formData = new FormData();
+	formData.append("file", file);
+
+	try {
+		const response = await axios.post(`${BASE_URL}/upload-file/csv`, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		return response.data;
+	} catch (error) {
+		console.error("Error uploading file:", error);
 		throw error;
 	} finally {
 		setLoading(false);

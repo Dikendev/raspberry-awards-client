@@ -46,7 +46,9 @@ i18n
           numberOfMovies: "Total Number of Movies per Producer",
           loading: "Loading...",
           uploadCSV: "Upload CSV",
-          uploadCSVMessage: "You can also upload a CSV file with the correct format to save to the table"
+          uploadCSVMessage: "You can also upload a CSV file with the correct format to save to the table",
+          serverHealth: "server online",
+          serverDown: "server offline"
         }
       },
       pt: {
@@ -88,7 +90,9 @@ i18n
           numberOfMovies: "Número Total de Filmes por Produtor",
           loading: "Carregando...",
           uploadCSV: "Carregar CSV",
-          uploadCSVMessage: "Você também pode carregar um arquivo CSV com o formato correto para salvar na tabela"
+          uploadCSVMessage: "Você também pode carregar um arquivo CSV com o formato correto para salvar na tabela",
+          serverHealth: "on-line",
+          serverDown: "desligado"
         }
       }
     },

@@ -43,7 +43,7 @@ i18n
           largestGapYears: "Longest Gap (years)",
           fastestWins: "Quickest Wins",
           fastestGapYears: "Shortest Gap (years)",
-          numberOfMovies: "Total Number of Movies",
+          numberOfMovies: "Total Number of Movies per Producer",
           loading: "Loading...",
           uploadCSV: "Upload CSV",
           uploadCSVMessage: "You can also upload a CSV file with the correct format to save to the table"
@@ -85,7 +85,7 @@ i18n
           largestGapYears: "Maior Intervalo (anos)",
           fastestWins: "Vitórias Mais Rápidas",
           fastestGapYears: "Menor Intervalo (anos)",
-          numberOfMovies: "Número Total de Filmes",
+          numberOfMovies: "Número Total de Filmes por Produtor",
           loading: "Carregando...",
           uploadCSV: "Carregar CSV",
           uploadCSVMessage: "Você também pode carregar um arquivo CSV com o formato correto para salvar na tabela"

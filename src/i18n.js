@@ -44,7 +44,9 @@ i18n
           fastestWins: "Quickest Wins",
           fastestGapYears: "Shortest Gap (years)",
           numberOfMovies: "Total Number of Movies",
-          loading: "Loading..."
+          loading: "Loading...",
+          uploadCSV: "Upload CSV",
+          uploadCSVMessage: "You can also upload a CSV file with the correct format to save to the table"
         }
       },
       pt: {
@@ -84,7 +86,9 @@ i18n
           fastestWins: "Vitórias Mais Rápidas",
           fastestGapYears: "Menor Intervalo (anos)",
           numberOfMovies: "Número Total de Filmes",
-          loading: "Carregando..."
+          loading: "Carregando...",
+          uploadCSV: "Carregar CSV",
+          uploadCSVMessage: "Você também pode carregar um arquivo CSV com o formato correto para salvar na tabela"
         }
       }
     },

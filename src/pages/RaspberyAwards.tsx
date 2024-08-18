@@ -5,38 +5,8 @@ import Modal from 'react-modal';
 import AddMovieForm from '../components/AddComponentForm';
 import Spinner from '../components/Spinner';
 import { useTranslation } from 'react-i18next';
-
-export interface Studio {
-  _id: string;
-  name: string;
-}
-
-export interface Producer {
-  _id: string;
-  name: string;
-}
-
-export interface Movie {
-  _id: string;
-  title: string;
-  year: number;
-  studio: Studio[];
-  producer: Producer[];
-  winner: string;
-}
-
-export enum Winner {
-  YES = 'yes',
-  NO = 'no',
-}
-
-export interface CreateMovie {
-  title: string;
-  year: number;
-  studio: string;
-  producer: string;
-  winner: Winner;
-}
+import { Movie } from '../interfaces/MovieInterface';
+import { CreateMovie } from '../interfaces/CreateMovieInterface';
 
 const RaspberryAwards: React.FC = () => {
   const { t } = useTranslation();
@@ -48,6 +18,7 @@ const RaspberryAwards: React.FC = () => {
   const [isAddMovieModalOpen, setIsAddMovieModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [csvFileName, setCsvFileName] = useState<string | null>(null);
 
   useEffect(() => {
     const loadMovies = async () => {
@@ -113,6 +84,15 @@ const RaspberryAwards: React.FC = () => {
     setError(null);
   };
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type === 'text/csv') {
+      setCsvFileName(file.name);
+    } else {
+      setError('Please upload a valid CSV file.');
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       {loading && <Spinner />}
@@ -122,6 +102,23 @@ const RaspberryAwards: React.FC = () => {
       >
         {t('addMovie')}
       </button>
+      <div className="mb-4 flex flex-row gap-5" >
+       <div>
+         <label className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer inline-block">
+          {t('uploadCSV')}
+          <input
+            type="file"
+            accept=".csv"
+            onChange={handleFileUpload}
+            className="hidden"
+          />
+        </label>
+        {csvFileName && <p className="mt-2 text-sm text-gray-600">{t('uploadedFile')}: {csvFileName}</p>}
+       </div>
+        <div className='self-center'>
+          <p className="text-sm text-gray-600">{t('You can also upload a CSV file with the correct format to save to the table')}</p>
+        </div>
+      </div>
 
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white">

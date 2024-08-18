@@ -1,6 +1,9 @@
 import axios from "axios";
-import { CreateMovie } from "../pages/RaspberyAwards";
-import { AnalyticsResult, FastestWinsResult } from "../pages/AnalyticsPage";
+import { CreateMovie } from "../interfaces/CreateMovieInterface";
+import {
+	AnalyticsResult,
+	FastestWinsResult,
+} from "../interfaces/AnalyticsInterface";
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 

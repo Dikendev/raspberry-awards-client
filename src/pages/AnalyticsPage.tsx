@@ -1,29 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 import { fetchAnalyticsData } from '../services/apiService';
 import Spinner from '../components/Spinner';
-import ProducerMovieCountsChart from '../components/ProducerMovieCountsChart'; // Import the chart component
+import ProducerMovieCountsChart from '../components/ProducerMovieCountsChart'; 
+import { AnalyticsResult, FastestWinsResult } from '../interfaces/AnalyticsInterface';
 
-interface Movie {
-  year: number;
-  winner: string;
-}
-
-interface Producer {
-  name: string;
-  movies: Movie[];
-}
-
-export interface AnalyticsResult {
-  producer: Producer;
-  largestGap: number;
-}
-
-export interface FastestWinsResult {
-  producer: Producer;
-  fastestGap: number;
-}
 
 const AnalyticsPage: React.FC = () => {
   const { t } = useTranslation();

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import { CreateMovie, Winner } from '../pages/RaspberyAwards';
+import { CreateMovie } from '../interfaces/CreateMovieInterface';
+import { Winner } from '../interfaces/MovieInterface';
 
 interface Studio {
   _id: string;

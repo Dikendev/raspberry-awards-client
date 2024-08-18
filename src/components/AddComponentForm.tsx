@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { CreateMovie, Winner } from '../pages/RaspberyAwards';
+import { CreateMovie } from '../interfaces/CreateMovieInterface';
+import { Winner } from '../interfaces/MovieInterface';
 
 interface AddMovieFormProps {
   onAddMovie: (newMovie: Partial<CreateMovie>) => void;
@@ -11,7 +12,7 @@ const AddMovieForm: React.FC<AddMovieFormProps> = ({ onAddMovie , onClose}) => {
   const [year, setYear] = useState<number | ''>('');
   const [studio, setStudio] = useState('');
   const [producer, setProducer] = useState('');
-  const [winner, setWinner] = useState<Winner | ''>('');
+  const [winner, setWinner] = useState<Winner| ''>('');
   const [successMessage, setSuccessMessage] = useState('');
 
 

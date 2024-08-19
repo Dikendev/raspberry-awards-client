@@ -53,7 +53,11 @@ i18n
           filterByYear: "Filter by Year",
           filterByProducer: "Filter by Producer",
           filterByStudio: "Filter by Studio",
-          NumberOfMoviesByYear: "Number of Movies by Year",
+          chooseMoviesByYearOrByStudio: "Choose between Movies by Year or by Studio",
+          moviesByYear: "Movies by Year",
+          moviesByStudio: "Movies by Studio",
+          numberOfMoviesChart: "Number of Movies",
+          years: "year(s)",
         }
       },
       pt: {
@@ -102,7 +106,11 @@ i18n
           filterByYear: "Filtrar por Ano",
           filterByProducer: "Filtrar por Produtor",
           filterByStudio: "Filtrar por Estúdio",
-          numberOfMoviesByYear: "Número de Filmes por Ano",
+          chooseMoviesByYearOrByStudio: "Escolha entre Filmes por Ano ou por Estúdio",
+          moviesByYear: "Filmes por Ano",
+          moviesByStudio: "Filmes por Estúdio",
+          numberOfMoviesChart: "Número de Filmes",
+          years: "ano(s)",
         }
       }
     },

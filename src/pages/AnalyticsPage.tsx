@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { fetchAnalyticsData } from '../services/apiService';
 import Spinner from '../components/Spinner';
-import ProducerMovieCountsChart from '../components/ProducerMovieCountsChart'; 
 import { LargestGapResult, FastestWinsResult } from '../interfaces/AnalyticsInterface';
-import MoviesByYearChart from '../components/MoviesByYearChart';
+import MoviesByYearChart from '../components/charts/MoviesByYearChart';
+import ProducerMovieCountsChart from '../components/charts/ProducerMovieCountsChart';
 
 const AnalyticsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -35,7 +35,7 @@ const AnalyticsPage: React.FC = () => {
         {largestGapResult ? (
           <div>
             <p><strong>{t('producerName')}:</strong> {largestGapResult.producer.name}</p>
-            <p><strong>{t('largestGapYears')}:</strong> {largestGapResult.largestGap} years</p>
+            <p><strong>{t('largestGapYears')}:</strong> {largestGapResult.largestGap} {t('years')}</p>
           </div>
         ) : (
           <p>Loading...</p>
@@ -47,7 +47,7 @@ const AnalyticsPage: React.FC = () => {
         {fastestWinsResult ? (
           <div>
             <p><strong>{t('producerName')}:</strong> {fastestWinsResult.producer.name}</p>
-            <p><strong>{t('fastestGapYears')}:</strong> {fastestWinsResult.fastestWins} years</p>
+            <p><strong>{t('fastestGapYears')}:</strong> {fastestWinsResult.fastestWins} {t('years')}</p>
           </div>
         ) : (
           <p>Loading...</p>
@@ -60,7 +60,7 @@ const AnalyticsPage: React.FC = () => {
       </section>
 
       <section className="mt-8">
-        <h2 className="text-xl font-semibold mb-2">{t('numberOfMoviesByYear')}</h2>
+        <h2 className="text-xl font-semibold mb-2">{t('chooseMoviesByYearOrByStudio')}</h2>
         <MoviesByYearChart></MoviesByYearChart>
       </section>
     </div>

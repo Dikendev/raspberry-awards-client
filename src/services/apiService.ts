@@ -163,15 +163,26 @@ export const uploadFile = async (
 	}
 };
 
-export const fetchMoviesByYear = async () => {
+export const moviesByYear = async () => {
 	try {
 		const response = await axios.get(
 			`${BASE_URL}/analytics/movie-counts-by-year`
 		);
-
 		return response.data;
 	} catch (error) {
 		console.info("Error fetching movies by year:", error);
+		throw error;
+	}
+};
+
+export const moviesByStudio = async () => {
+	try {
+		const response = await axios.get(
+			`${BASE_URL}/analytics/movie-counts-by-studio`
+		);
+		return response.data;
+	} catch (error) {
+		console.info("Error fetching movies by studio:", error);
 		throw error;
 	}
 };

@@ -1,7 +1,14 @@
-import React from 'react';
-import { FileUploaderProps } from '../interfaces/FileUploaderInterface';
+import React, { ChangeEvent, RefObject } from 'react';
 
-const FileUploader: React.FC<FileUploaderProps> = ({ handleFileUpload, csvFileName, t }) => {
+interface FileUploaderProps {
+  handleFileUpload: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
+  csvFileName: string | null;
+  t: (key: string) => string;
+  fileInputRef: RefObject<HTMLInputElement>;
+}
+
+
+const FileUploader: React.FC<FileUploaderProps> = ({ handleFileUpload, csvFileName, t,fileInputRef }) => {
   return (
     <div className="mb-4 flex flex-row gap-5">
       <div>
@@ -12,6 +19,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ handleFileUpload, csvFileNa
             accept=".csv"
             onChange={handleFileUpload}
             className="hidden"
+            ref={fileInputRef}
           />
         </label>
         {csvFileName && <p className="mt-2 text-sm text-gray-600">{t('uploadedFile')}: {csvFileName}</p>}

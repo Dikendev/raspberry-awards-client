@@ -48,7 +48,12 @@ i18n
           uploadCSV: "Upload CSV",
           uploadCSVMessage: "You can also upload a CSV file with the correct format to save to the table",
           serverHealth: "server online",
-          serverDown: "server offline"
+          serverDown: "server offline",
+          filterByTitle: "Filter by Title",
+          filterByYear: "Filter by Year",
+          filterByProducer: "Filter by Producer",
+          filterByStudio: "Filter by Studio",
+          NumberOfMoviesByYear: "Number of Movies by Year",
         }
       },
       pt: {
@@ -92,11 +97,16 @@ i18n
           uploadCSV: "Carregar CSV",
           uploadCSVMessage: "Você também pode carregar um arquivo CSV com o formato correto para salvar na tabela",
           serverHealth: "on-line",
-          serverDown: "desligado"
+          serverDown: "desligado",
+          filterByTitle: "Filtrar por Título",
+          filterByYear: "Filtrar por Ano",
+          filterByProducer: "Filtrar por Produtor",
+          filterByStudio: "Filtrar por Estúdio",
+          numberOfMoviesByYear: "Número de Filmes por Ano",
         }
       }
     },
-    fallbackLng: 'en',
+    fallbackLng: 'pt',
     interpolation: {
       escapeValue: false
     }

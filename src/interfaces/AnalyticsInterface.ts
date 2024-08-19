@@ -8,12 +8,17 @@ export interface Producer {
 	movies: Movie[];
 }
 
-export interface AnalyticsResult {
+export interface LargestGapResult {
 	producer: Producer;
 	largestGap: number;
 }
 
 export interface FastestWinsResult {
 	producer: Producer;
-	fastestGap: number;
+	fastestWins: number;
+}
+
+export interface AnalyticsInterface {
+	largestGap: LargestGapResult;
+	fastestWins: FastestWinsResult;
 }

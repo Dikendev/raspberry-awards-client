@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import { createMovie, deleteMovie, fetchMovies, updateMovie, uploadFile } from '../services/apiService';
 import MovieModal from '../components/modals/UpdateMovieModalForm';
 import Modal from 'react-modal';
@@ -28,6 +28,8 @@ const RaspberryAwards: React.FC = () => {
       producer: '',
       studio: '',
     });
+
+  const fileInputRef = useRef<HTMLInputElement>(null); 
 
   useEffect(() => {
     const loadMovies = async () => {
@@ -96,8 +98,15 @@ const RaspberryAwards: React.FC = () => {
 
       try {
         await uploadFile(file, setLoading)
+        const data = await fetchMovies(page, limit, setLoading);
+        setMovies(data);
       } catch (error) {
         setError('Failed to upload CSV file')
+      } finally {
+        setCsvFileName(null);
+         if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
       }
       
     } else {
@@ -146,6 +155,7 @@ const RaspberryAwards: React.FC = () => {
         handleFileUpload={handleFileUpload}
         csvFileName={csvFileName}
         t={t}
+        fileInputRef={fileInputRef} 
       />
     </div>
 

@@ -3,21 +3,21 @@ import { useTranslation } from 'react-i18next';
 import { fetchAnalyticsData } from '../services/apiService';
 import Spinner from '../components/Spinner';
 import ProducerMovieCountsChart from '../components/ProducerMovieCountsChart'; 
-import { AnalyticsResult, FastestWinsResult } from '../interfaces/AnalyticsInterface';
-
+import { LargestGapResult, FastestWinsResult } from '../interfaces/AnalyticsInterface';
+import MoviesByYearChart from '../components/MoviesByYearChart';
 
 const AnalyticsPage: React.FC = () => {
   const { t } = useTranslation();
-  const [largestGapResult, setLargestGapResult] = useState<AnalyticsResult | null>(null);
+  const [largestGapResult, setLargestGapResult] = useState<LargestGapResult | null>(null);
   const [fastestWinsResult, setFastestWinsResult] = useState<FastestWinsResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     async function loadAnalytics() {
       try {
-        const { largestGapResult, fastestWinsResult } = await fetchAnalyticsData(setLoading);
-        setLargestGapResult(largestGapResult);
-        setFastestWinsResult(fastestWinsResult);
+        const { largestGap, fastestWins } = await fetchAnalyticsData(setLoading);
+        setLargestGapResult(largestGap);
+        setFastestWinsResult(fastestWins);
       } catch (error) {
         console.error('Error fetching analytics data', error);
       }
@@ -47,7 +47,7 @@ const AnalyticsPage: React.FC = () => {
         {fastestWinsResult ? (
           <div>
             <p><strong>{t('producerName')}:</strong> {fastestWinsResult.producer.name}</p>
-            <p><strong>{t('fastestGapYears')}:</strong> {fastestWinsResult.fastestGap} years</p>
+            <p><strong>{t('fastestGapYears')}:</strong> {fastestWinsResult.fastestWins} years</p>
           </div>
         ) : (
           <p>Loading...</p>
@@ -57,6 +57,11 @@ const AnalyticsPage: React.FC = () => {
       <section className="mt-8">
         <h2 className="text-xl font-semibold mb-2">{t('numberOfMovies')}</h2>
         <ProducerMovieCountsChart />
+      </section>
+
+      <section className="mt-8">
+        <h2 className="text-xl font-semibold mb-2">{t('numberOfMoviesByYear')}</h2>
+        <MoviesByYearChart></MoviesByYearChart>
       </section>
     </div>
   );

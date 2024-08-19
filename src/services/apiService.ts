@@ -1,41 +1,27 @@
 import axios from "axios";
 import { CreateMovie } from "../interfaces/CreateMovieInterface";
 import {
-	AnalyticsResult,
+	AnalyticsInterface,
 	FastestWinsResult,
+	LargestGapResult,
 } from "../interfaces/AnalyticsInterface";
 import { HealthApiInterface } from "../interfaces/health-api/HealthApiInterface";
+import { Movie } from "../interfaces/MovieInterface";
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
-export const fetchData = async (
-	endpoint: string,
-	setLoading: (loading: boolean) => void
-) => {
-	setLoading(true);
-	try {
-		const response = await axios.get(endpoint);
-		return response.data;
-	} catch (error) {
-		console.error("Error fetching data:", error);
-		throw error;
-	} finally {
-		setLoading(false);
-	}
-};
 
 export const fetchMovies = async (
 	page: number,
 	limit: number,
 	setLoading: (loading: boolean) => void
-) => {
+): Promise<Movie[]> => {
 	setLoading(true);
 	try {
 		const url = `${BASE_URL}/movie?page=${page}&limit=${limit}`;
-		const response = await axios.get(url);
+		const response = await axios.get<Movie[]>(url);
 		return response.data;
 	} catch (error) {
-		console.error("Fetch movies failed:", error);
+		console.info("Fetch movies failed:", error);
 		return [];
 	} finally {
 		setLoading(false);
@@ -44,14 +30,12 @@ export const fetchMovies = async (
 
 export const updateMovie = async (
 	movieId: string,
-	updateData: any,
+	updateData: Partial<CreateMovie>,
 	setLoading: (loading: boolean) => void
-) => {
-	console.log("updateData", updateData);
-
+): Promise<Movie> => {
 	setLoading(true);
 	try {
-		const response = await axios.patch(
+		const response = await axios.patch<Movie>(
 			`${BASE_URL}/movie/${movieId}`,
 			updateData,
 			{
@@ -62,7 +46,7 @@ export const updateMovie = async (
 		);
 		return response.data;
 	} catch (error) {
-		console.error("Error updating movie:", error);
+		console.info("Error updating movie:", error);
 		throw error;
 	} finally {
 		setLoading(false);
@@ -72,17 +56,17 @@ export const updateMovie = async (
 export const createMovie = async (
 	newMovie: Partial<CreateMovie>,
 	setLoading: (loading: boolean) => void
-) => {
+): Promise<Movie> => {
 	setLoading(true);
 	try {
-		const response = await axios.post(`${BASE_URL}/movie`, newMovie, {
+		const response = await axios.post<Movie>(`${BASE_URL}/movie`, newMovie, {
 			headers: {
 				"Content-Type": "application/json",
 			},
 		});
-		return response;
+		return response.data;
 	} catch (err) {
-		console.error("Error updating movie:", err);
+		console.info("Error updating movie:", err);
 		throw err;
 	} finally {
 		setLoading(false);
@@ -92,13 +76,12 @@ export const createMovie = async (
 export const deleteMovie = async (
 	movieId: string,
 	setLoading: (loading: boolean) => void
-) => {
+): Promise<void> => {
 	setLoading(true);
 	try {
-		const response = await axios.delete(`${BASE_URL}/movie/${movieId}`);
-		return response.data;
+		await axios.delete(`${BASE_URL}/movie/${movieId}`);
 	} catch (error) {
-		console.error("Error deleting movie:", error);
+		console.info("Error deleting movie:", error);
 		throw error;
 	} finally {
 		setLoading(false);
@@ -107,23 +90,23 @@ export const deleteMovie = async (
 
 export const fetchAnalyticsData = async (
 	setLoading: (loading: boolean) => void
-) => {
+): Promise<AnalyticsInterface> => {
 	setLoading(true);
 	try {
 		const fastestUrl = `${BASE_URL}/analytics/fastest-wins`;
 		const largestGapUrl = `${BASE_URL}/analytics/largest-gap`;
 
 		const [largestGapResponse, fastestWinsResponse] = await Promise.all([
-			axios.get<AnalyticsResult>(largestGapUrl),
+			axios.get<LargestGapResult>(largestGapUrl),
 			axios.get<FastestWinsResult>(fastestUrl),
 		]);
 
 		return {
-			largestGapResult: largestGapResponse.data,
-			fastestWinsResult: fastestWinsResponse.data,
+			largestGap: largestGapResponse.data,
+			fastestWins: fastestWinsResponse.data,
 		};
 	} catch (error) {
-		console.error("Error deleting movie:", error);
+		console.info("Error deleting movie:", error);
 		throw error;
 	} finally {
 		setLoading(false);
@@ -139,7 +122,7 @@ export const fetchProducerMovieCounts = async (
 		const response = await axios.get(movieCounts);
 		return response.data;
 	} catch (error) {
-		console.error("Error fetching producer data:", error);
+		console.info("Error fetching producer data:", error);
 		throw error;
 	} finally {
 		setLoading(false);
@@ -151,7 +134,7 @@ export const checkHealthApi = async (): Promise<HealthApiInterface> => {
 		const response = await axios.get<HealthApiInterface>(`${BASE_URL}/health`);
 		return response.data;
 	} catch (error) {
-		console.error("Error checking health:", error);
+		console.info("Error checking health:", error);
 		throw error;
 	}
 };
@@ -173,9 +156,22 @@ export const uploadFile = async (
 
 		return response.data;
 	} catch (error) {
-		console.error("Error uploading file:", error);
+		console.info("Error uploading file:", error);
 		throw error;
 	} finally {
 		setLoading(false);
+	}
+};
+
+export const fetchMoviesByYear = async () => {
+	try {
+		const response = await axios.get(
+			`${BASE_URL}/analytics/movie-counts-by-year`
+		);
+
+		return response.data;
+	} catch (error) {
+		console.info("Error fetching movies by year:", error);
+		throw error;
 	}
 };

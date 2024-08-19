@@ -1,5 +1,5 @@
 import React, { useEffect, useState,useRef } from 'react';
-import { createMovie, deleteMovie, fetchMovies, updateMovie, uploadFile } from '../services/apiService';
+import { createMovie, deleteMovie, fetchMovies, updateMovie, uploadFile, wipeDatabase } from '../services/apiService';
 import MovieModal from '../components/modals/UpdateMovieModalForm';
 import Modal from 'react-modal';
 import AddMovieForm from '../components/modals/CreateMovieModalForm';
@@ -122,6 +122,17 @@ const RaspberryAwards: React.FC = () => {
     }));
   };
 
+    const handleWipeDatabase = async () => {
+    if (window.confirm('Are you sure you want to wipe the database? This action cannot be undone.')) {
+      try {
+        await wipeDatabase(setLoading);
+        setMovies([]);
+      } catch (err) {
+        setError('Failed to wipe database.');
+      }
+    }
+  };
+
    const filteredMovies = movies.filter(movie => {
     return (
       movie.title.toLowerCase().includes(searchQueries.title.toLowerCase()) &&
@@ -144,20 +155,26 @@ const RaspberryAwards: React.FC = () => {
         onClick={() => setIsAddMovieModalOpen(true)}
       >
         {t('addMovie')}
-      </button>
+      </button>  
       <SearchBar
       onSearchChange={handleSearchChange}
       searchQueries={searchQueries}
       t={t}
       />
-    <div>
-      <FileUploader
-        handleFileUpload={handleFileUpload}
-        csvFileName={csvFileName}
-        t={t}
-        fileInputRef={fileInputRef} 
-      />
-    </div>
+      <div className="flex flex-col sm:flex-row justify-between items-center">
+        <FileUploader
+          handleFileUpload={handleFileUpload}
+          csvFileName={csvFileName}
+          t={t}
+          fileInputRef={fileInputRef} 
+        />
+        <button
+          className="bg-red-500 text-white px-4 py-2 rounded mb-4 sm:mb-0 sm:ml-4 w-fit"
+          onClick={handleWipeDatabase}
+        >
+          {t('wipeDatabase')}
+        </button>
+      </div>
 
       <PaginationControls
         limit={limit}

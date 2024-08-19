@@ -186,3 +186,16 @@ export const moviesByStudio = async () => {
 		throw error;
 	}
 };
+
+export const wipeDatabase = async (setLoading: (loading: boolean) => void) => {
+	setLoading(true);
+	try {
+		const response = await axios.delete(`${BASE_URL}/wipe`);
+		return response.data;
+	} catch (error) {
+		console.info("Error wipe database:", error);
+		throw error;
+	} finally {
+		setLoading(false);
+	}
+};

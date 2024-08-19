@@ -15,7 +15,7 @@ const RaspberryAwards: React.FC = () => {
   const { t } = useTranslation();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(30);
+  const [limit, setLimit] = useState<number>(10);
   const [selectedMovie, setSelectedMovie] = useState<Movie | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isAddMovieModalOpen, setIsAddMovieModalOpen] = useState<boolean>(false);

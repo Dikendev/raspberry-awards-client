@@ -59,6 +59,14 @@ http://localhost:3100
 
 <img width="700" alt="GIF" align="center" src="./src/assets/images/analytics.png">
 
+<br/>
+
+<img width="700" alt="GIF" align="center" src="./src/assets/images/analytics_by_year.png">
+
+<br/>
+
+<img width="700" alt="GIF" align="center" src="./src/assets/images/analytics_by_studio.png">
+
 <div align="start">
 <br/>
 
